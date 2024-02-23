@@ -1,6 +1,6 @@
 
 """ Script that runs a flask application"""
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 app = Flask(__name__)
 
 
@@ -27,8 +27,8 @@ def home():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html', title='About')
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
