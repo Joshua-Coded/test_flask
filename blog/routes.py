@@ -1,14 +1,7 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from flask_sqlalchemy import SQLAlchemy
-from forms import RegistrationForm, LoginForm
-
-app = Flask(__name__)
-
-app.config['SECRET_KEY'] = '1bce43da0fa199def6acc2f7dcfb6d2e'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-
-db = SQLAlchemy(app)
-from models import User, Post
+from flask import render_template, url_for, flash, redirect
+from blog import app
+from blog.forms import RegistrationForm, LoginForm
+from blog.models import User, Post
 
 
 posts = [
@@ -57,7 +50,3 @@ def login():
             flash("Log In Failed. Please Check Email and Password", "danger")
     return render_template('login.html', title='Login', form=form)
 
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
