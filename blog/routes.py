@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from blog import app, db, bcrypt
-from blog.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from blog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from blog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -107,7 +107,11 @@ def account():
 
 
 
-@app.route("/post/new")
+@app.route("/post/new", methods=["POST", "GET"])
 @login_required
 def new_post():
-    return render_template('create_post.html', title='New Post')
+    form = PostForm()
+    if form.validate_on_submit():
+        flash("Your Post has been created!", "success")
+        return redirect(url_for('home'))
+    return render_template('create_post.html', title='New Post', form=form)
