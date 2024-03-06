@@ -167,11 +167,22 @@ def user_posts(username):
     posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('user_posts.html', posts=posts, user=user)
 
+
+def send_reset_email(user):
+    pass
+
+
+
 @app.route("/reset_password", methods=["POST", "GET"])
 def reset_request():
     if current_user.is_authenticated():
         return redirect(url_for("home"))  
     form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash("An email has been sent with instructions to reset your password", "info")
+        return redirect(url_for("login"))
     return render_template('reset_request.html', title='Reset Password', form=form)
 
 
